@@ -23,7 +23,7 @@
            data-max="{{ cfg.max_name }}">
     <label for="body">הברכה</label>
     <textarea id="body" name="body" rows="6" dir="auto" required
-              placeholder="מה תרצו לאחל?"
+              placeholder="מה תרצו לאחל?&#10;אפשר גם להוסיף אימוג'י 🎉❤️"
               data-max="{{ cfg.max_length }}">{{ body }}</textarea>
     <p class="counter" id="counter" aria-live="polite">עד {{ cfg.max_length }} תווים</p>
     <button type="submit">{% if greeting %}שמירת השינויים{% else %}שליחה{% endif %}</button>
