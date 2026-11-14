@@ -131,7 +131,9 @@ With the default settings (6 cards):
 - If the network drops, the screen keeps rotating what it has.
 
 All of these times are in the `[screen]` section of `config.toml`:
-`cards`, `change_secs` (6), `new_secs` (120), `min_secs` (12). The layout has
+`cards`, `change_secs` (6), `new_secs` (120), `min_secs` (12). So is the
+screen's `background`: the color at the top, as `"#rrggbb"`, which darkens
+toward the bottom (default `"#4a2a6b"`, purple). The layout has
 three columns, so `cards` fills the screen evenly when it is a multiple of 3.
 
 

@@ -86,6 +86,17 @@ def test_screen_api_versions(app, client):
     assert [g["body"] for g in r.get_json()["greetings"]] == ["ברכה"]
 
 
+def test_screen_background(tmp_path):
+    from greetings import config
+    a = create_app(make_cfg(tmp_path, screen={"background": "#9c2f6b"}), require_login=False)
+    assert 'style="--bg: #9c2f6b"' in a.test_client().get("/screen").get_data(as_text=True)
+    # Check that anything but a #rrggbb color is refused, since it goes
+    # into the page.
+    for bad in ("pink", "#12345", '#123456"><script>'):
+        with pytest.raises(config.ConfigError):
+            make_cfg(tmp_path, screen={"background": bad})
+
+
 def test_qr_svg(client):
     r = client.get("/qr.svg")
     assert r.headers["Content-Type"] == "image/svg+xml"

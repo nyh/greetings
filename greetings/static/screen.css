@@ -19,7 +19,13 @@ body {
   cursor: none;
   font-family: var(--font);
   color: #fff;
-  background: radial-gradient(ellipse at top, #4a2a6b 0%, #241536 55%, #120b1d 100%);
+  /* --bg, from `background` in config.toml, is the color at the top; it
+     darkens toward the bottom, to half its brightness and then a quarter. */
+  --bg: #4a2a6b;
+  background: radial-gradient(ellipse at top,
+    var(--bg) 0%,
+    color-mix(in srgb, var(--bg) 49%, black) 55%,
+    color-mix(in srgb, var(--bg) 25%, black) 100%);
   display: flex;
   flex-direction: column;
 }

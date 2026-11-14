@@ -10,6 +10,7 @@ lives in config.toml, which is not in git, so the code says nothing about it.
 from __future__ import annotations
 
 import os
+import re
 import tomllib
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -36,6 +37,7 @@ class Screen:
     new_secs: float = 120     # a new greeting's first turn, unless more arrive
                               # together than there are cards
     poll_secs: float = 2      # how often the screen asks for changes
+    background: str = "#4a2a6b"   # the color at the top; darker toward the bottom
 
 
 @dataclass(frozen=True)
@@ -128,6 +130,9 @@ def from_dict(raw: dict, path: Path | None = None) -> Config:
         raise ConfigError(f"base_url {cfg_base!r}: scheme and host, no trailing slash")
     if cfg.max_length < 1 or cfg.max_name < 1:
         raise ConfigError("max_length and max_name must be positive")
+    if not re.fullmatch(r"#[0-9a-fA-F]{6}", cfg.screen.background):
+        raise ConfigError(f"[screen] background {cfg.screen.background!r}: "
+                          f"a color like \"#4a2a6b\"")
     if cfg.screen.cards < 1:
         raise ConfigError("[screen] cards must be positive")
     if cfg.google.enabled and not cfg.base_url:
@@ -159,6 +164,7 @@ cards       = 6      # greetings on screen at once
 change_secs = 6      # one card is replaced this often
 min_secs    = 12     # a card stays up at least this long
 new_secs    = 120    # a new greeting's first turn on screen
+background  = "#4a2a6b"   # the color at the top; darker toward the bottom
 
 [google]
 enabled       = false
