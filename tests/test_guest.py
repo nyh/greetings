@@ -17,12 +17,12 @@ def test_form_is_hebrew_rtl(client):
 
 
 def test_send_greeting_sets_cookie_and_thanks(client, cfg):
-    r = send(client, "סבתא רחל", "מזל טוב!")
+    r = send(client, "אורחת", "מזל טוב!")
     assert r.status_code == 302 and r.headers["Location"].endswith("/thanks")
     assert "greeting=" in r.headers["Set-Cookie"]
     assert "HttpOnly" in r.headers["Set-Cookie"]
     [g] = rows(cfg)
-    assert (g.name, g.body) == ("סבתא רחל", "מזל טוב!")
+    assert (g.name, g.body) == ("אורחת", "מזל טוב!")
     html = client.get("/thanks").get_data(as_text=True)
     assert "מזל טוב!" in html
 
@@ -85,9 +85,9 @@ def test_length_limits(client, cfg):
 
 
 def test_text_is_cleaned(client, cfg):
-    send(client, "  רחל \n כהן ", "שורה\r\n\r\n\r\n\r\nשורה‮ הפוך\x07")
+    send(client, "  שם \n ארוך ", "שורה\r\n\r\n\r\n\r\nשורה‮ הפוך\x07")
     [g] = rows(cfg)
-    assert g.name == "רחל כהן"
+    assert g.name == "שם ארוך"
     assert g.body == "שורה\n\nשורה הפוך"
 
 

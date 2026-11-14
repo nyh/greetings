@@ -19,7 +19,7 @@
     <input type="hidden" name="csrf" value="{{ csrf_token() }}">
     <label for="name">השם שלך</label>
     <input id="name" name="name" value="{{ name }}" dir="auto" required
-           autocomplete="name" placeholder="למשל: סבתא רחל"
+           autocomplete="name" placeholder="כפי שיופיע על המסך"
            data-max="{{ cfg.max_name }}">
     <label for="body">הברכה</label>
     <textarea id="body" name="body" rows="6" dir="auto" required

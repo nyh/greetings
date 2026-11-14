@@ -64,12 +64,12 @@ def test_close_and_open_form(client, cfg):
 
 
 def test_print_and_csv(app, client):
-    send(app.test_client(), "רחל", "מזל טוב, \"יקירה\"\nשורה שנייה")
+    send(app.test_client(), "אורח", "מזל טוב, \"יקירה\"\nשורה שנייה")
     html = client.get("/admin/print").get_data(as_text=True)
-    assert "רחל" in html and "1 ברכות" in html
+    assert "אורח" in html and "1 ברכות" in html
     r = client.get("/admin/greetings.csv")
     text = r.get_data(as_text=True)
-    assert text.startswith("﻿") and "רחל" in text
+    assert text.startswith("﻿") and "אורח" in text
     assert '"מזל טוב, ""יקירה""\nשורה שנייה"' in text
 
 
