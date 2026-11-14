@@ -8,7 +8,6 @@
   --gold: #f4cf73;
   --card: rgba(255, 255, 255, .94);
   --ink: #2b2433;
-  --accent: #7b3fa0;
 }
 
 * { box-sizing: border-box; }
@@ -83,7 +82,9 @@ body {
   margin: .6em 0 0;
   font-size: .75em;
   font-weight: 700;
-  color: var(--accent);
+  /* A darker shade of the background color: still recognizably the same
+     hue, and dark enough to read easily on the white card. */
+  color: color-mix(in srgb, var(--bg) 75%, black);
 }
 .card .name::before { content: "— "; }
 
