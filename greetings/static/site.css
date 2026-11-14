@@ -1,0 +1,160 @@
+/* The guest form and the family's pages.
+   Copyright (C) 2026 Nadav Har'El
+   SPDX-License-Identifier: AGPL-3.0-or-later */
+
+:root {
+  --bg: #fbf7f2;
+  --fg: #2b2433;
+  --muted: #6e6578;
+  --accent: #7b3fa0;
+  --accent-fg: #fff;
+  --card: #fff;
+  --line: #e4dbe9;
+  --danger: #b3261e;
+  --font: "Rubik", "Heebo", "Assistant", "Noto Sans Hebrew", "Arial Hebrew",
+          "Droid Sans Hebrew", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--fg);
+  background: var(--bg);
+}
+
+h1 { font-size: 1.8rem; line-height: 1.2; margin: 0 0 .5rem; color: var(--accent); }
+h2 { font-size: 1.2rem; }
+a { color: var(--accent); }
+
+.sheet { max-width: 34rem; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
+.wide { max-width: 60rem; margin: 0 auto; padding: 1rem; }
+.lead { font-size: 1.1rem; color: var(--muted); margin-top: 0; }
+
+/* ------------------------------------------------------------ forms */
+
+.greeting-form { display: flex; flex-direction: column; gap: .35rem; }
+label { font-weight: 600; margin-top: .75rem; }
+input, textarea {
+  font: inherit;
+  font-size: 1.1rem;          /* 16px or more: iOS does not zoom on focus */
+  padding: .6rem .75rem;
+  border: 1px solid var(--line);
+  border-radius: .6rem;
+  background: var(--card);
+  color: inherit;
+  width: 100%;
+}
+textarea { resize: vertical; min-height: 9rem; }
+/* dir="auto" lets an English greeting run left to right, but an empty field
+   then falls back to left to right too, and the Hebrew placeholder with it. */
+input:placeholder-shown, textarea:placeholder-shown { direction: rtl; }
+input:focus, textarea:focus { outline: 2px solid var(--accent); border-color: transparent; }
+.counter { margin: 0; font-size: .9rem; color: var(--muted); }
+.counter.over { color: var(--danger); font-weight: 600; }
+.hint { font-size: .9rem; color: var(--muted); }
+
+button, .button {
+  display: inline-block;
+  font: inherit;
+  font-weight: 600;
+  padding: .7rem 1.4rem;
+  margin-top: .75rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-fg);
+  text-decoration: none;
+  cursor: pointer;
+}
+.greeting-form button { align-self: stretch; font-size: 1.15rem; }
+button.secondary, .button.secondary {
+  background: transparent;
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1.5px var(--accent);
+}
+button.danger { background: transparent; color: var(--danger); box-shadow: inset 0 0 0 1.5px var(--danger); }
+button.link { background: none; color: var(--accent); padding: 0; margin: 0; font-weight: normal; text-decoration: underline; }
+form.inline { display: inline; }
+
+.errors {
+  background: #fdecea;
+  color: var(--danger);
+  border-radius: .6rem;
+  padding: .25rem 1rem;
+  margin: 1rem 0;
+}
+.message {
+  background: #eef7ee;
+  border-radius: .6rem;
+  padding: .6rem 1rem;
+}
+
+blockquote.mine {
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  background: var(--card);
+  border-radius: 1rem;
+  border-inline-start: 4px solid var(--accent);
+  white-space: pre-line;
+}
+blockquote.mine p { margin: 0 0 .5rem; font-size: 1.15rem; }
+blockquote.mine footer { color: var(--muted); }
+
+/* ------------------------------------------------------------ admin */
+
+.admin-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: .5rem 1.5rem;
+  padding: .75rem 1rem;
+  background: var(--card);
+  border-bottom: 1px solid var(--line);
+}
+.admin-bar h1 { margin: 0; font-size: 1.4rem; }
+.admin-bar nav { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; align-items: baseline; }
+
+.status { display: flex; flex-wrap: wrap; align-items: center; gap: 0 1rem; }
+.status p { margin: 0; }
+.status button { margin-top: 0; }
+.empty { color: var(--muted); }
+
+.list { list-style: none; padding: 0; }
+.item {
+  display: grid;
+  grid-template-columns: 6rem 1fr auto;
+  gap: .5rem 1rem;
+  align-items: start;
+  padding: .9rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.item .meta { color: var(--muted); font-size: .9rem; display: flex; flex-direction: column; }
+.item .body { margin: 0; white-space: pre-line; }
+.item .name { margin: .25rem 0 0; color: var(--muted); font-weight: 600; }
+.item .actions { display: flex; gap: .5rem; }
+.item .actions button, .item .actions .button { margin: 0; padding: .4rem 1rem; font-size: .95rem; }
+.badge {
+  align-self: flex-start;
+  font-size: .8rem;
+  padding: 0 .5rem;
+  border-radius: 999px;
+  background: var(--line);
+}
+@media (max-width: 40rem) {
+  .item { grid-template-columns: 1fr; }
+  .item .meta { flex-direction: row; gap: .75rem; }
+}
+.deleted { margin-top: 2rem; }
+.deleted summary { cursor: pointer; color: var(--muted); }
+.deleted .text { opacity: .65; }
+
+.revisions ol { list-style: none; padding: 0; }
+.revisions li { border-top: 1px solid var(--line); padding: .5rem 0; }
+.revisions .meta { color: var(--muted); font-size: .9rem; }
+.revisions .body { white-space: pre-line; margin: .25rem 0; }
+.revisions .name { margin: 0; color: var(--muted); }

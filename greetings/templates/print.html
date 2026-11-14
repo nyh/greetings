@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ cfg.title }} – ברכות</title>
+<link rel="stylesheet" href="{{ static('print.css') }}">
+</head>
+<body>
+<div class="toolbar">
+  <button type="button" id="print">שמירה כ-PDF</button>
+  <p>בחלון ההדפסה בוחרים ביעד „שמירה כ-PDF” (Save as PDF).
+     כדאי לבטל בהגדרות הנוספות את „כותרות עליונות ותחתונות”.</p>
+</div>
+<header class="cover">
+  <h1>{{ cfg.title }}</h1>
+  <p>{{ greetings|length }} ברכות</p>
+</header>
+<main>
+{% for x in greetings %}
+  <article class="greeting">
+    <p class="body" dir="auto">{{ x.body }}</p>
+    <p class="name" dir="auto">{{ x.name }}</p>
+  </article>
+{% endfor %}
+</main>
+<script src="{{ static('print.js') }}" defer></script>
+</body>
+</html>

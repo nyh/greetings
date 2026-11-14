@@ -1,0 +1,60 @@
+# /etc/systemd/system/greetings.service
+#
+#   systemctl daemon-reload
+#   systemctl enable --now greetings
+#   journalctl -u greetings -f
+#
+# Modeled on harelphotos.service (https://github.com/nyh/harelphotos).
+# Edit User=, Group= and the path in ExecStart= to match your installation.
+
+[Unit]
+Description=greetings
+After=network.target
+
+[Service]
+User=greetings
+Group=greetings
+
+Environment=GREETINGS_CONFIG=/etc/greetings/config.toml
+
+# Not the source tree: the config search begins with ./config.toml, and a
+# checkout's development config must never be picked up by the real site.
+WorkingDirectory=/var/lib/greetings
+
+# One worker, eight threads. A few hundred guests sending a greeting each is
+# light work; the screen polls every two seconds and usually gets a 304.
+#
+# --workers 1, not more: the per-IP limit on new greetings is kept in memory,
+# per process. --no-control-socket: see harelphotos.service, the same
+# ProtectHome= restriction applies.
+ExecStart=/home/greetings/greetings/.venv/bin/gunicorn \
+    --workers 1 \
+    --threads 8 \
+    --worker-class gthread \
+    --timeout 30 \
+    --graceful-timeout 10 \
+    --bind 127.0.0.1:8098 \
+    --no-control-socket \
+    --error-logfile - \
+    greetings.wsgi:app
+
+ExecReload=/bin/kill -s HUP $MAINPID
+Restart=on-failure
+RestartSec=2
+TimeoutStopSec=20
+
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=read-only
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictSUIDSGID=true
+LockPersonality=true
+ReadWritePaths=/var/lib/greetings
+
+[Install]
+WantedBy=multi-user.target

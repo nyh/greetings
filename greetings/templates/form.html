@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block body_class %}guest{% endblock %}
+{% block body %}
+<main class="sheet">
+  <h1>{{ cfg.title }}</h1>
+  {% if greeting %}
+    <p class="lead">זאת הברכה ששלחת. אפשר לתקן אותה ולשמור שוב.</p>
+  {% else %}
+    <p class="lead">{{ cfg.form_heading }}, והיא תופיע על המסך הגדול.</p>
+  {% endif %}
+
+  {% if errors %}
+  <div class="errors" role="alert">
+    {% for e in errors %}<p>{{ e }}</p>{% endfor %}
+  </div>
+  {% endif %}
+
+  <form method="post" action="/" class="greeting-form">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <label for="name">השם שלך</label>
+    <input id="name" name="name" value="{{ name }}" dir="auto" required
+           autocomplete="name" placeholder="למשל: סבתא רחל"
+           data-max="{{ cfg.max_name }}">
+    <label for="body">הברכה</label>
+    <textarea id="body" name="body" rows="6" dir="auto" required
+              placeholder="מה תרצו לאחל?"
+              data-max="{{ cfg.max_length }}">{{ body }}</textarea>
+    <p class="counter" id="counter" aria-live="polite">עד {{ cfg.max_length }} תווים</p>
+    <button type="submit">{% if greeting %}שמירת השינויים{% else %}שליחה{% endif %}</button>
+  </form>
+</main>
+<script src="{{ static('form.js') }}" defer></script>
+{% endblock %}

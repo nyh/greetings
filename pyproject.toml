@@ -1,0 +1,33 @@
+[project]
+name = "greetings"
+version = "0.1.0"
+description = "A live greetings wall for a family event, with a Hebrew user interface"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
+authors = [{ name = "Nadav Har'El" }]
+requires-python = ">=3.11"          # tomllib in the stdlib
+dependencies = [
+    "Flask",                        # web framework, Jinja2
+    "requests",                     # Google OAuth token exchange
+    "gunicorn",                     # WSGI server behind Apache
+    "segno",                        # QR codes, pure Python
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.scripts]
+greetings = "greetings.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["greetings*"]
+
+[tool.setuptools.package-data]
+greetings = ["templates/*.html", "static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

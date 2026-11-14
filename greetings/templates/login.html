@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}כניסה{% endblock %}
+{% block body_class %}guest{% endblock %}
+{% block body %}
+<main class="sheet">
+  <h1>כניסה למשפחה</h1>
+  {% if error %}<div class="errors" role="alert"><p>{{ error }}</p></div>{% endif %}
+  {% if google %}
+    <p class="lead">הדף הזה מיועד למשפחה בלבד.</p>
+    <p><a class="button" href="{{ url_for('google_start', next=next) }}">כניסה עם Google</a></p>
+  {% else %}
+    <p class="lead">הכניסה עם Google עוד לא הוגדרה בשרת.</p>
+  {% endif %}
+</main>
+{% endblock %}

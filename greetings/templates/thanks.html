@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block body_class %}guest{% endblock %}
+{% block body %}
+<main class="sheet">
+  <h1>תודה!</h1>
+  <p class="lead">הברכה שלך תופיע על המסך בעוד רגע.</p>
+  <blockquote class="mine">
+    <p dir="auto">{{ greeting.body }}</p>
+    <footer dir="auto">{{ greeting.name }}</footer>
+  </blockquote>
+  <p><a class="button secondary" href="/">לתיקון הברכה</a></p>
+</main>
+{% endblock %}

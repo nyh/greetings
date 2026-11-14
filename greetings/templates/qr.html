@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>קוד QR</title>
+<link rel="stylesheet" href="{{ static('print.css') }}">
+</head>
+<body class="qr-page">
+<main>
+  <h1>{{ cfg.title }}</h1>
+  <p class="call">סרקו וכתבו ברכה</p>
+  <img src="{{ url_for('qr_svg') }}" alt="קוד QR לטופס הברכות">
+  <p class="url" dir="ltr">{{ public_url().split('://', 1)[-1] }}</p>
+</main>
+</body>
+</html>

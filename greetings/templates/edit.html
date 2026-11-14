@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}עריכת ברכה{% endblock %}
+{% block body_class %}admin{% endblock %}
+{% block body %}
+<header class="admin-bar">
+  <h1>עריכת ברכה #{{ greeting.id }}</h1>
+  <nav><a href="{{ url_for('admin') }}#g{{ greeting.id }}">חזרה לרשימה</a></nav>
+</header>
+<main class="sheet">
+  {% if greeting.deleted %}<p class="message">הברכה הזאת נמחקה ואינה מופיעה על המסך.</p>{% endif %}
+  {% if errors %}
+  <div class="errors" role="alert">{% for e in errors %}<p>{{ e }}</p>{% endfor %}</div>
+  {% endif %}
+  <form method="post" class="greeting-form">
+    <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+    <label for="name">שם</label>
+    <input id="name" name="name" value="{{ name }}" dir="auto" required>
+    <label for="body">ברכה</label>
+    <textarea id="body" name="body" rows="8" dir="auto" required>{{ body }}</textarea>
+    <p class="hint">אם הברכה מוצגת עכשיו על המסך, היא תתעדכן שם מיד.</p>
+    <button type="submit">שמירה</button>
+  </form>
+
+  {% if revisions %}
+  <section class="revisions">
+    <h2>גרסאות קודמות</h2>
+    <ol>
+    {% for r in revisions %}
+      <li>
+        <div class="meta">עד {{ r.edited_at|localtime('%d/%m %H:%M') }},
+          תוקנה על ידי {% if r.edited_by == 'guest' %}השולח{% else %}<span dir="ltr">{{ r.edited_by }}</span>{% endif %}</div>
+        <p class="body" dir="auto">{{ r.body }}</p>
+        <p class="name" dir="auto">{{ r.name }}</p>
+      </li>
+    {% endfor %}
+    </ol>
+  </section>
+  {% endif %}
+</main>
+{% endblock %}

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ cfg.title }}</title>
+<link rel="stylesheet" href="{{ static('screen.css') }}">
+</head>
+<body>
+<header class="top">
+  <h1>{{ cfg.title }}</h1>
+  <div class="invite">
+    <img class="qr" src="{{ url_for('qr_svg', on='dark') }}" alt="">
+    <div>
+      <p class="call">סרקו וכתבו ברכה</p>
+      <p class="url" dir="ltr">{{ public_url().split('://', 1)[-1] }}</p>
+    </div>
+  </div>
+</header>
+<main id="wall" class="wall" style="--cards: {{ settings.cards }}"></main>
+<p id="empty" hidden>עדיין אין ברכות. היו הראשונים!</p>
+<p id="status" hidden></p>
+<script id="settings" type="application/json">{{ settings|tojson }}</script>
+<script type="module" src="{{ static('screen.js') }}"></script>
+</body>
+</html>

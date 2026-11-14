@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}ניהול ברכות{% endblock %}
+{% block body_class %}admin{% endblock %}
+{% block body %}
+<header class="admin-bar">
+  <h1>ניהול ברכות</h1>
+  <nav>
+    <a href="{{ url_for('screen') }}" target="_blank">המסך</a>
+    <a href="{{ url_for('admin_print') }}" target="_blank">הורדה כ-PDF</a>
+    <a href="{{ url_for('admin_csv') }}">קובץ CSV</a>
+    <a href="{{ url_for('admin_qr') }}" target="_blank">קוד QR להדפסה</a>
+    {% if require_login %}
+    <form method="post" action="{{ url_for('logout') }}" class="inline">
+      <button class="link" title="{{ admin_email }}">יציאה</button>
+    </form>
+    {% endif %}
+  </nav>
+</header>
+<main class="wide">
+  {% if message %}<p class="message" role="status">{{ message }}</p>{% endif %}
+
+  <section class="status">
+    <p><strong>{{ greetings|length }}</strong> ברכות.
+      הטופס לאורחים {% if form_open %}<strong>פתוח</strong>{% else %}<strong>סגור</strong>{% endif %}
+      (<a href="/" target="_blank" dir="ltr">{{ public_url() }}</a>).</p>
+    <form method="post" action="{{ url_for('admin_form') }}" class="inline">
+      <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+      {% if form_open %}
+        <input type="hidden" name="open" value="0">
+        <button class="secondary"
+                data-confirm="לסגור את הטופס? אורחים לא יוכלו לשלוח או לתקן ברכות.">סגירת הטופס</button>
+      {% else %}
+        <input type="hidden" name="open" value="1">
+        <button class="secondary">פתיחת הטופס</button>
+      {% endif %}
+    </form>
+  </section>
+
+  {% if not greetings %}<p class="empty">עדיין אין ברכות.</p>{% endif %}
+  <ol class="list" reversed>
+  {% for x in greetings %}
+    <li id="g{{ x.id }}" class="item">
+      <div class="meta">
+        <span class="num">#{{ x.id }}</span>
+        <span>{{ x.created_at|localtime }}</span>
+        {% if x.edited %}<span class="badge" title="עודכנה ב-{{ x.updated_at|localtime }}">נערכה</span>{% endif %}
+      </div>
+      <div class="text">
+        <p class="body" dir="auto">{{ x.body }}</p>
+        <p class="name" dir="auto">{{ x.name }}</p>
+      </div>
+      <div class="actions">
+        <a class="button secondary" href="{{ url_for('admin_edit', gid=x.id) }}">עריכה</a>
+        <form method="post" action="{{ url_for('admin_delete', gid=x.id) }}" class="inline">
+          <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+          <button class="danger" data-confirm="למחוק את הברכה של {{ x.name }}?">מחיקה</button>
+        </form>
+      </div>
+    </li>
+  {% endfor %}
+  </ol>
+
+  {% if deleted %}
+  <details class="deleted">
+    <summary>ברכות שנמחקו ({{ deleted|length }})</summary>
+    <ol class="list">
+    {% for x in deleted %}
+      <li id="g{{ x.id }}" class="item">
+        <div class="meta"><span class="num">#{{ x.id }}</span>
+          <span>נמחקה ב-{{ x.deleted_at|localtime }}</span></div>
+        <div class="text">
+          <p class="body" dir="auto">{{ x.body }}</p>
+          <p class="name" dir="auto">{{ x.name }}</p>
+        </div>
+        <div class="actions">
+          <form method="post" action="{{ url_for('admin_restore', gid=x.id) }}" class="inline">
+            <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+            <button class="secondary">שחזור</button>
+          </form>
+        </div>
+      </li>
+    {% endfor %}
+    </ol>
+  </details>
+  {% endif %}
+</main>
+<script src="{{ static('admin.js') }}" defer></script>
+{% endblock %}

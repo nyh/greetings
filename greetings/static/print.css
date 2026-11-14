@@ -1,0 +1,72 @@
+/* The keepsake (saved as PDF from the browser) and the printable QR page.
+   Copyright (C) 2026 Nadav Har'El
+   SPDX-License-Identifier: AGPL-3.0-or-later */
+
+:root {
+  --font: "Rubik", "Heebo", "Assistant", "Noto Sans Hebrew", "Arial Hebrew",
+          "Droid Sans Hebrew", Arial, sans-serif;
+  --accent: #7b3fa0;
+  --muted: #6e6578;
+}
+
+@page { size: A4; margin: 18mm 16mm; }
+
+* { box-sizing: border-box; }
+body {
+  margin: 0 auto;
+  max-width: 50rem;
+  padding: 1rem;
+  font-family: var(--font);
+  color: #2b2433;
+  background: #fff;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.toolbar {
+  background: #f3eef7;
+  border-radius: .75rem;
+  padding: .75rem 1rem;
+  margin-bottom: 2rem;
+}
+.toolbar p { margin: .5rem 0 0; color: var(--muted); font-size: .9rem; }
+.toolbar button {
+  font: inherit;
+  font-weight: 600;
+  padding: .6rem 1.4rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.cover { text-align: center; margin-bottom: 2rem; }
+.cover h1 { font-size: 2.4rem; color: var(--accent); margin: 0 0 .25rem; }
+.cover p { color: var(--muted); margin: 0; }
+
+main { columns: 2; column-gap: 8mm; }
+.greeting {
+  break-inside: avoid;
+  margin: 0 0 6mm;
+  padding: 4mm 5mm;
+  border: 1px solid #e4dbe9;
+  border-inline-start: 3px solid var(--accent);
+  border-radius: 3mm;
+}
+.greeting .body { margin: 0; white-space: pre-line; line-height: 1.5; }
+.greeting .name { margin: 2mm 0 0; font-weight: 700; color: var(--accent); }
+
+@media print {
+  body { padding: 0; max-width: none; }
+  .toolbar { display: none; }
+  .cover { margin-top: 0; }
+}
+
+/* ------------------------------------------------------------ QR page */
+
+.qr-page main { columns: auto; text-align: center; padding-top: 10vh; }
+.qr-page h1 { font-size: 2.6rem; color: var(--accent); margin: 0; }
+.qr-page .call { font-size: 1.8rem; font-weight: 600; margin: 1rem 0; }
+.qr-page img { width: min(70vw, 120mm); height: auto; }
+.qr-page .url { font-size: 1.5rem; color: var(--muted); }
